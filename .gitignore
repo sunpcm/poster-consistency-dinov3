@@ -1,0 +1,4 @@
+# SSH keys and known_hosts — MUST NEVER be committed
+.ssh_key
+.ssh_key.pub
+.ssh_known_hosts
