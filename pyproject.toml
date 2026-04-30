@@ -1,0 +1,70 @@
+[project]
+name = "poster-consistency-dinov3"
+version = "0.1.0"
+description = "Garment / poster Logo consistency anomaly detection via DINOv3 self-supervised features."
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+authors = [{ name = "yongli" }]
+
+# 运行时依赖。新增依赖请用：uv add <pkg>，会自动写入这里。
+# 注意：torch / torchvision / torchaudio 由下方 [tool.uv.sources] 强制锁定到 cu124 源，
+# 防止其他包的依赖解析把 GPU 版 PyTorch 降级覆盖为 CPU 版。
+dependencies = [
+    "torch>=2.6.0",
+    "torchvision>=0.21.0",
+    "torchaudio>=2.6.0",
+    "transformers>=4.45.0",
+    "accelerate>=1.0.0",
+    "peft>=0.13.0",
+    "huggingface-hub>=0.25.0",
+    "bitsandbytes>=0.44.0",
+    "opencv-python>=4.10.0",
+    "pillow>=10.0.0",
+    "numpy>=2.0,<3.0",
+]
+
+[dependency-groups]
+# uv add --dev <pkg> 写到这里
+dev = [
+    "ipython>=8.0",
+    "jupyterlab>=4.0",
+    "matplotlib>=3.8",
+    "ruff>=0.6",
+]
+
+# =============================================================================
+# 关键：锁定 PyTorch 家族到 CUDA 12.4 wheel 源
+# 避免 transformers 等包依赖解析时把 torch 降级为 CPU 版。
+# =============================================================================
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu124" }
+torchvision = { index = "pytorch-cu124" }
+torchaudio = { index = "pytorch-cu124" }
+
+[[tool.uv.index]]
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
+
+# 默认主源走清华（也可由 .env 中的 UV_DEFAULT_INDEX 覆盖）
+[[tool.uv.index]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+# =============================================================================
+# 工具配置
+# =============================================================================
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]  # line-length 已经设了，避免和 formatter 打架
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

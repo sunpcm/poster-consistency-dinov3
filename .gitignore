@@ -2,3 +2,42 @@
 .ssh_key
 .ssh_key.pub
 .ssh_known_hosts
+
+# Secrets / local config
+.env
+*.token
+*.secret
+
+# Python / venv
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Caches (kept inside project per AGENTS.md R3)
+.hf_cache/
+.uv_cache/
+.torch_cache/
+
+# Models & data — too large for git
+models/
+data/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# Logs & runs
+logs/
+runs/
+wandb/
+*.log
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
